@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>True Incidents</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>True Incidents</h1>
+  <p>Real stories that shape society</p>
+</header>
+
+<section class="form-section">
+  <h2>Share Your Incident</h2>
+  <input type="text" id="title" placeholder="Incident Title">
+  
+  <textarea id="story" placeholder="Write the true incident..."></textarea>
+
+  <select id="category">
+    <option>Life Struggle</option>
+    <option>Social Injustice</option>
+    <option>Kindness & Humanity</option>
+    <option>Mistakes & Lessons</option>
+    <option>Hope & Healing</option>
+  </select>
+
+  <label>
+    <input type="checkbox" id="anonymous"> Share Anonymously
+  </label>
+
+  <button onclick="addStory()">Submit Incident</button>
+</section>
+
+<section id="stories">
+  <h2>Real Incidents</h2>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
