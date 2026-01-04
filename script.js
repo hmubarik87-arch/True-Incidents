@@ -29,6 +29,8 @@ function addStory() {
       <button onclick="react(this)">🙏 <span>0</span></button>
     </div>
 
+    <button class="report-btn" onclick="reportStory(this)">🚩 Report</button>
+
     <p class="category">
       ${category} • ${anonymous ? "Anonymous" : "Shared with name"}
     </p>
@@ -57,4 +59,19 @@ function react(button) {
   let countSpan = button.querySelector("span");
   let count = parseInt(countSpan.innerText);
   countSpan.innerText = count + 1;
+}
+
+function reportStory(btn) {
+  let reason = prompt(
+    "Why are you reporting this?\n\n1. Abuse\n2. Fake story\n3. Hate speech\n4. Other"
+  );
+
+  if (reason) {
+    let card = btn.closest(".story-card");
+    card.innerHTML = `
+      <p style="color:red; font-weight:bold;">
+        🚩 This story has been reported and hidden.
+      </p>
+    `;
+  }
 }
