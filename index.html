@@ -38,24 +38,6 @@
   <h2>Real Incidents</h2>
 </section>
 
-<!-- Firebase SDKs -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "true-incidents.firebaseapp.com",
-    projectId: "true-incidents",
-    storageBucket: "true-incidents.appspot.com",
-    messagingSenderId: "135645222486",
-    appId: "YOUR_APP_ID"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  window.db = getFirestore(app);
-</script>
-
 <script src="script.js"></script>
 </body>
 </html>
