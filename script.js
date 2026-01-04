@@ -16,9 +16,22 @@ function addStory() {
 
   card.innerHTML = `
     <h3>${title}</h3>
-    <p class="story-text" data-full="${story}">${shortStory}</p>
+
+    <p class="story-text" data-full="${story}">
+      ${shortStory}
+    </p>
+
     <button class="read-btn" onclick="toggleRead(this)">Read More</button>
-    <p class="category">${category} • ${anonymous ? "Anonymous" : "Shared with name"}</p>
+
+    <div class="reactions">
+      <button onclick="react(this)">❤️ <span>0</span></button>
+      <button onclick="react(this)">🤍 <span>0</span></button>
+      <button onclick="react(this)">🙏 <span>0</span></button>
+    </div>
+
+    <p class="category">
+      ${category} • ${anonymous ? "Anonymous" : "Shared with name"}
+    </p>
   `;
 
   document.getElementById("stories").prepend(card);
@@ -38,4 +51,10 @@ function toggleRead(btn) {
     p.innerText = fullText.substring(0, 120) + "...";
     btn.innerText = "Read More";
   }
+}
+
+function react(button) {
+  let countSpan = button.querySelector("span");
+  let count = parseInt(countSpan.innerText);
+  countSpan.innerText = count + 1;
 }
