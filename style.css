@@ -72,3 +72,15 @@ button {
 .reactions button:hover {
   background: #e0e0e0;
 }
+.report-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.report-btn:hover {
+  text-decoration: underline;
+}
