@@ -149,3 +149,10 @@ function applySavedTheme() {
     }
   }
 }
+// Splash screen hide
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    let splash = document.getElementById("splash");
+    if (splash) splash.style.display = "none";
+  }, 1200);
+});
