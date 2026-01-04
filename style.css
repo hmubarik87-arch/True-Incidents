@@ -1,3 +1,4 @@
+document.body.classList.remove("dark");
 body {
   font-family: Arial, sans-serif;
   background: #f5f7fa;
@@ -138,4 +139,8 @@ body.dark select {
 
 #splash p {
   opacity: 0.8;
+}
+#app {
+  min-height: 100vh;
+  background: inherit;
 }
