@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – True Incidents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: white;
+      padding: 15px;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+    }
+    button {
+      background: red;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Admin Panel</h1>
+<p>Manage incidents</p>
+
+<div id="adminStories">Loading...</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    getDocs,
+    deleteDoc,
+    doc,
+    orderBy,
+    query
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "true-incidents.firebaseapp.com",
+    projectId: "true-incidents",
+    storageBucket: "true-incidents.appspot.com",
+    messagingSenderId: "135645222486",
+    appId: "1:135645222486:web:44d6ceab000d5ab0df7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const adminDiv = document.getElementById("adminStories");
+
+  async function loadAdminStories() {
+    adminDiv.innerHTML = "";
+
+    const q = query(
+      collection(db, "stories"),
+      orderBy("createdAt", "desc")
+    );
+
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      adminDiv.innerHTML = "<p>No stories found.</p>";
+      return;
+    }
+
+    snapshot.forEach(d => {
+      const data = d.data();
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <h3>${data.title}</h3>
+        <p>${data.story}</p>
+        <p style="opacity:0.7">${data.category} • ${data.anonymous ? "Anonymous" : "Named"}</p>
+        <button onclick="deleteStory('${d.id}')">Delete</button>
+      `;
+
+      adminDiv.appendChild(card);
+    });
+  }
+
+  window.deleteStory = async function(id) {
+    if (!confirm("Delete this story permanently?")) return;
+    await deleteDoc(doc(db, "stories", id));
+    loadAdminStories();
+  };
+
+  loadAdminStories();
+</script>
+
+</body>
+</html>
