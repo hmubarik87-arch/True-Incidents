@@ -1,3 +1,20 @@
+// 🔥 Firebase SDKs
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// 🔥 Your Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyD-ueJnLy6hpl1JpGJdNjI7lc-Ujzz8nw",
+  authDomain: "true-incidents.firebaseapp.com",
+  projectId: "true-incidents",
+  storageBucket: "true-incidents.appspot.com",
+  messagingSenderId: "135645222486",
+  appId: "1:135645222486:web:44d6ceab8008d5c5ab0df7"
+};
+
+// 🔥 Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 function addStory() {
   let title = document.getElementById("title").value;
   let story = document.getElementById("story").value;
