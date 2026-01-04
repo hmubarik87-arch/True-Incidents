@@ -2,92 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>True Incidents</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#121212" />
+  <title>True Incidents</title>
 
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#121212" />
 </head>
 
 <body>
 
-  <!-- Splash Screen -->
-  <div id="splash">
-    <h1>True Incidents</h1>
-    <p>Real stories that shape society</p>
-  </div>
+<!-- Splash Screen -->
+<div id="splash">
+  <h1>True Incidents</h1>
+  <p>Real stories that shape society</p>
+</div>
 
-  <!-- Main App -->
-  <div id="app" style="display:none;">
+<!-- App -->
+<div id="app" style="display:none;">
 
-    <header>
-      <h1>True Incidents</h1>
-      <p>Real stories that shape society</p>
-      <button id="themeToggle" onclick="toggleTheme()">🌙 Night Mode</button>
-    </header>
+<header>
+  <h1>True Incidents</h1>
+  <p>Real stories that shape society</p>
+  <button id="themeToggle" onclick="toggleTheme()">🌙 Night Mode</button>
+</header>
 
-    <section class="form-section">
-      <h2>Share Your Incident</h2>
+<section class="form-section">
+  <h2>Share Your Incident</h2>
 
-      <input type="text" id="title" placeholder="Incident Title" />
+  <input type="text" id="title" placeholder="Incident Title" />
+  <textarea id="story" placeholder="Write the true incident..."></textarea>
 
-      <textarea id="story" placeholder="Write the true incident..."></textarea>
+  <select id="category">
+    <option>Life Struggle</option>
+    <option>Social Injustice</option>
+    <option>Kindness & Humanity</option>
+    <option>Mistakes & Lessons</option>
+    <option>Hope & Healing</option>
+  </select>
 
-      <select id="category">
-        <option>Life Struggle</option>
-        <option>Social Injustice</option>
-        <option>Kindness & Humanity</option>
-        <option>Mistakes & Lessons</option>
-        <option>Hope & Healing</option>
-      </select>
+  <label>
+    <input type="checkbox" id="anonymous" /> Share Anonymously
+  </label>
 
-      <label>
-        <input type="checkbox" id="anonymous" />
-        Share Anonymously
-      </label>
+  <button onclick="addStory()">Submit Incident</button>
+</section>
 
-      <button onclick="addStory()">Submit Incident</button>
-    </section>
+<section id="stories">
+  <h2>Real Incidents</h2>
+</section>
 
-    <section id="stories">
-      <h2>Real Incidents</h2>
-    </section>
+</div>
 
-  </div>
+<!-- Splash Logic -->
+<script>
+  setTimeout(() => {
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  }, 1200);
+</script>
 
-  <!-- Splash → App switch -->
-  <script>
-    setTimeout(() => {
-      const splash = document.getElementById("splash");
-      const app = document.getElementById("app");
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-      if (splash) splash.style.display = "none";
-      if (app) app.style.display = "block";
-    }, 1200);
-  </script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "true-incidents.firebaseapp.com",
+    projectId: "true-incidents",
+    storageBucket: "true-incidents.appspot.com",
+    messagingSenderId: "135645222486",
+    appId: "1:135645222486:web:44d6ceab000d5ab0df7"
+  };
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  const app = initializeApp(firebaseConfig);
+  window.db = getFirestore(app);
+</script>
 
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "true-incidents.firebaseapp.com",
-      projectId: "true-incidents",
-      storageBucket: "true-incidents.appspot.com",
-      messagingSenderId: "135645222486",
-      appId: "1:135645222486:web:44d6ceab0008d5ab0df7"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    window.db = getFirestore(app);
-  </script>
-
-  <!-- App Logic -->
-  <script type="module" src="script.js"></script>
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
