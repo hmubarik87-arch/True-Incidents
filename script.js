@@ -1,21 +1,23 @@
-// 🔥 Firebase SDKs
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// 🔥 Your Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyD-ueJnLy6hpl1JpGJdNjI7lc-Ujzz8nw",
-  authDomain: "true-incidents.firebaseapp.com",
-  projectId: "true-incidents",
-  storageBucket: "true-incidents.appspot.com",
-  messagingSenderId: "135645222486",
-  appId: "1:135645222486:web:44d6ceab8008d5c5ab0df7"
+// Reference to stories collection
+const storiesRef = collection(window.db, "stories");
+
+// Load stories on app start
+window.onload = async function () {
+  applySavedTheme();
+  loadStories();
 };
 
-// 🔥 Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-function addStory() {
+// Add story
+async function addStory() {
   let title = document.getElementById("title").value;
   let story = document.getElementById("story").value;
   let category = document.getElementById("category").value;
@@ -26,15 +28,46 @@ function addStory() {
     return;
   }
 
-  let shortStory = story.length > 120 ? story.substring(0, 120) + "..." : story;
+  await addDoc(storiesRef, {
+    title,
+    story,
+    category,
+    anonymous,
+    createdAt: serverTimestamp()
+  });
+
+  document.getElementById("title").value = "";
+  document.getElementById("story").value = "";
+
+  loadStories();
+}
+
+// Load stories
+async function loadStories() {
+  document.getElementById("stories").innerHTML = "<h2>Real Incidents</h2>";
+
+  const q = query(storiesRef, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach(doc => {
+    renderStory(doc.data());
+  });
+}
+
+// Render story card
+function renderStory(data) {
+  let shortStory =
+    data.story.length > 120
+      ? data.story.substring(0, 120) + "..."
+      : data.story;
 
   let card = document.createElement("div");
   card.className = "story-card";
 
   card.innerHTML = `
-    <h3>${title}</h3>
+    <h3>${data.title}</h3>
 
-    <p class="story-text" data-full="${story}">
+    <p class="story-text" data-full="${data.story}">
       ${shortStory}
     </p>
 
@@ -49,16 +82,14 @@ function addStory() {
     <button class="report-btn" onclick="reportStory(this)">🚩 Report</button>
 
     <p class="category">
-      ${category} • ${anonymous ? "Anonymous" : "Shared with name"}
+      ${data.category} • ${data.anonymous ? "Anonymous" : "Shared with name"}
     </p>
   `;
 
-  document.getElementById("stories").prepend(card);
-
-  document.getElementById("title").value = "";
-  document.getElementById("story").value = "";
+  document.getElementById("stories").appendChild(card);
 }
 
+// Read more / less
 function toggleRead(btn) {
   let p = btn.previousElementSibling;
   let fullText = p.getAttribute("data-full");
@@ -72,42 +103,49 @@ function toggleRead(btn) {
   }
 }
 
+// Reactions
 function react(button) {
-  let countSpan = button.querySelector("span");
-  let count = parseInt(countSpan.innerText);
-  countSpan.innerText = count + 1;
+  let span = button.querySelector("span");
+  span.innerText = parseInt(span.innerText) + 1;
 }
 
+// Report
 function reportStory(btn) {
   let reason = prompt(
-    "Why are you reporting this?\n\n1. Abuse\n2. Fake story\n3. Hate speech\n4. Other"
+    "Why are you reporting this?\n\n1. Abuse\n2. Fake\n3. Hate\n4. Other"
   );
 
   if (reason) {
     let card = btn.closest(".story-card");
-    card.innerHTML = `
-      <p style="color:red; font-weight:bold;">
-        🚩 This story has been reported and hidden.
-      </p>
-    `;
+    card.innerHTML =
+      "<p style='color:red;font-weight:bold;'>🚩 This story has been reported and hidden.</p>";
   }
 }
-// Day / Night Mode
+
+/* ---------- DAY / NIGHT SYSTEM ---------- */
+
 function toggleTheme() {
   document.body.classList.toggle("dark");
-
   let isDark = document.body.classList.contains("dark");
   localStorage.setItem("theme", isDark ? "dark" : "light");
-
+  localStorage.setItem("manualTheme", "true");
   document.getElementById("themeToggle").innerText =
-    isDark ? "🌞 Day" : "🌙 Night";
+    isDark ? "☀️ Day Mode" : "🌙 Night Mode";
 }
 
-// Load saved theme
-window.onload = function () {
-  let savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-    document.getElementById("themeToggle").innerText = "🌞 Day";
+function applySavedTheme() {
+  let saved = localStorage.getItem("theme");
+  let manual = localStorage.getItem("manualTheme");
+
+  if (saved) {
+    document.body.classList.toggle("dark", saved === "dark");
+    document.getElementById("themeToggle").innerText =
+      saved === "dark" ? "☀️ Day Mode" : "🌙 Night Mode";
+  } else if (!manual) {
+    let hour = new Date().getHours();
+    if (hour >= 18 || hour < 6) {
+      document.body.classList.add("dark");
+      document.getElementById("themeToggle").innerText = "☀️ Day Mode";
+    }
   }
-};
+}
