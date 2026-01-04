@@ -75,3 +75,22 @@ function reportStory(btn) {
     `;
   }
 }
+// Day / Night Mode
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+
+  let isDark = document.body.classList.contains("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+
+  document.getElementById("themeToggle").innerText =
+    isDark ? "🌞 Day" : "🌙 Night";
+}
+
+// Load saved theme
+window.onload = function () {
+  let savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    document.getElementById("themeToggle").innerText = "🌞 Day";
+  }
+};
