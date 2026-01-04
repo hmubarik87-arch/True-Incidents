@@ -149,10 +149,4 @@ function applySavedTheme() {
     }
   }
 }
-// Hide splash screen (SAFE for module scripts)
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    const splash = document.getElementById("splash");
-    if (splash) splash.style.display = "none";
-  }, 1000);
-});
+
