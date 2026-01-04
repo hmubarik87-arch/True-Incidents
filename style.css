@@ -1,11 +1,13 @@
-document.body.classList.remove("dark");
+/* -------------------- BASE -------------------- */
 body {
   font-family: Arial, sans-serif;
   background: #f5f7fa;
+  color: #000;
   margin: 0;
   padding: 0;
 }
 
+/* -------------------- HEADER -------------------- */
 header {
   background: #1e2a38;
   color: white;
@@ -13,16 +15,22 @@ header {
   text-align: center;
 }
 
-.form-section, #stories {
+/* -------------------- FORM + STORIES -------------------- */
+.form-section,
+#stories {
   padding: 15px;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   width: 100%;
   margin: 8px 0;
   padding: 10px;
+  box-sizing: border-box;
 }
 
+/* -------------------- BUTTONS -------------------- */
 button {
   background: #1e2a38;
   color: white;
@@ -32,6 +40,7 @@ button {
   cursor: pointer;
 }
 
+/* -------------------- STORY CARD -------------------- */
 .story-card {
   background: white;
   padding: 15px;
@@ -42,7 +51,10 @@ button {
 .category {
   font-size: 12px;
   color: #555;
+  margin-top: 6px;
 }
+
+/* -------------------- READ MORE -------------------- */
 .read-btn {
   background: none;
   color: #1e2a38;
@@ -55,6 +67,8 @@ button {
 .read-btn:hover {
   text-decoration: underline;
 }
+
+/* -------------------- REACTIONS -------------------- */
 .reactions {
   display: flex;
   gap: 12px;
@@ -73,6 +87,8 @@ button {
 .reactions button:hover {
   background: #e0e0e0;
 }
+
+/* -------------------- REPORT -------------------- */
 .report-btn {
   background: none;
   border: none;
@@ -85,13 +101,45 @@ button {
 .report-btn:hover {
   text-decoration: underline;
 }
-/* Day mode (default) */
-body {
-  background: #f5f7fa;
-  color: #000;
+
+/* -------------------- THEME TOGGLE -------------------- */
+#themeToggle {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
 }
 
-/* Night mode */
+/* -------------------- SPLASH -------------------- */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #121212;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#splash h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+#splash p {
+  opacity: 0.8;
+}
+
+/* -------------------- APP -------------------- */
+#app {
+  min-height: 100vh;
+  background: inherit;
+}
+
+/* -------------------- DARK MODE -------------------- */
 body.dark {
   background: #121212;
   color: #ffffff;
@@ -113,34 +161,11 @@ body.dark select {
   border: 1px solid #444;
 }
 
-#themeToggle {
-  margin-top: 10px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-}
-#splash {
-  position: fixed;
-  inset: 0;
-  background: #121212;
+body.dark .reactions button {
+  background: #2a2a2a;
   color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
 }
 
-#splash h1 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-#splash p {
-  opacity: 0.8;
-}
-#app {
-  min-height: 100vh;
-  background: inherit;
+body.dark .reactions button:hover {
+  background: #3a3a3a;
 }
